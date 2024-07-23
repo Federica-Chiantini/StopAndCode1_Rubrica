@@ -53,7 +53,7 @@ export class NuovoContattoComponent {
     if(this.servizioR.modifica){
       const dati = this.servizioR.testoDaModificare //prende i dati da contatto gia' creato
       this.idEsistente = dati!.id //prende id contatto esistente
-      this.formNuovoContatto.patchValue({
+      this.formNuovoContatto.patchValue({ //NB: NON MI FUNZIONA CON setValue MA SOLO CON patchValue
         "persona": dati!.persona,
         "nome": dati!.nome,
         "cognome": dati!.cognome,
