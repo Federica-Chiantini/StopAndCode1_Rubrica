@@ -1,0 +1,22 @@
+<h3 class="text-primary-emphasis mt-2 text-center">Tutti i contatti</h3>
+
+<ng-container *ngIf="rubricaCompleta.length > 0"> <!--SE CI SONO contatti presenti in lista-->
+    <p class="text-center">clicca sul contatto per visualizzare maggiori dettagli</p>
+    <ul class="list-group mb-1 m-auto" *ngFor="let utente of rubricaCompleta" style="width: 60vw;">
+        <li class="list-group-item list-group-item-info d-flex justify-content-between">
+<div>
+                <i class="bi bi-person-circle fs-2 me-2"></i> 
+                <span *ngIf="!utente.nome">{{utente.sociale}}</span>
+                <span *ngIf="!utente.sociale">{{utente.cognome}} {{utente.nome}}</span>
+</div>
+        <button type="button" class="btn btn-outline-secondary" [routerLink]="['/' + utente.id]">visualizza</button></li>
+    </ul>
+</ng-container><!--###-->
+
+<ng-container *ngIf="rubricaCompleta.length == 0"><!--SE NON CI STA NESSUN contatto in lista-->
+        <h4 class="text-warning fs-2 text-center">Nessun contatto e' presente in lista, clicca <a routerLink="/nuovo">QUI</a> per aggiungerne uno</h4>
+</ng-container><!--###-->
+
+<ng-container *ngIf="msg"><!--ERRORE nella ricerca dei contatti-->
+    <h4 class="text-danger">{{msg}}</h4>
+</ng-container>

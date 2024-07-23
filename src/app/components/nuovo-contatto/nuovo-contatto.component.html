@@ -1,0 +1,285 @@
+<h3 class="text-primary-emphasis mt-2 text-center">
+  Aggiungi o modifica un contatto
+</h3>
+
+<div class="mt-3 mb-3 p-3 border bg-body-tertiary m-auto" style="width: 55vw">
+  <form [formGroup]="formNuovoContatto" (ngSubmit)="inviaForm()">
+    <div class="mb-3">
+      <div class="form-check">
+        <!--radiobutton PERSONA FISICA-->
+        <input
+          class="form-check-input"
+          type="radio"
+          name="persona"
+          id="fisica"
+          value="fisica"
+          formControlName="persona"
+        />
+        <label class="form-check-label" for="fisica"> Persona fisica </label>
+      </div>
+      <div class="form-check">
+        <!--radio PERSONA GIURIDICA-->
+        <input
+          class="form-check-input"
+          type="radio"
+          name="persona"
+          id="giuridica"
+          value="giuridica"
+          formControlName="persona"
+        />
+        <label class="form-check-label" for="giuridica">
+          Persona giuridica
+        </label>
+      </div>
+      <!--Persona giuridica-->
+      <label for="sociale" class="form-label mt-3">Ragione sociale</label>
+      <input
+        type="text"
+        class="form-control"
+        id="sociale"
+        name="sociale"
+        formControlName="sociale"
+      />
+      <!--msg errore-->
+      <ng-container
+        *ngIf="
+          formNuovoContatto.get('sociale')?.errors &&
+          formNuovoContatto.get('sociale')?.touched
+        "
+      >
+        <div class="text-danger">
+          Formato corretto : nome azienda + sigla
+        </div>
+      </ng-container>
+      <!--###-->
+
+      <!--Persona fisica-->
+      <label for="nome" class="form-label mt-3">Nome</label>
+      <input
+        type="text"
+        class="form-control"
+        id="nome"
+        name="nome"
+        formControlName="nome"
+      />
+    </div>
+    <!--msg errore-->
+    <ng-container
+      *ngIf="
+        formNuovoContatto.get('nome')!.touched &&
+        formNuovoContatto.get('nome')!.errors
+      "
+    >
+      <div class="text-danger" *ngIf="formNuovoContatto.get('nome')!.errors">
+        Il nome deve essere lungo almeno 3 caratteri
+      </div>
+    </ng-container>
+    <!--###-->
+    <div class="mb-3">
+      <label for="cognome" class="form-label">Cognome</label>
+      <input
+        type="text"
+        class="form-control"
+        id="cognome"
+        name="cognome"
+        formControlName="cognome"
+      />
+    </div>
+    <!--msg errore-->
+    <ng-container
+      *ngIf="
+        formNuovoContatto.get('cognome')!.touched &&
+        formNuovoContatto.get('cognome')!.errors
+      "
+    >
+      <div class="text-danger" *ngIf="formNuovoContatto.get('cognome')!.errors">
+        Il nome deve essere lungo almeno 3 caratteri
+      </div>
+    </ng-container>
+    <!--###-->
+
+    <div class="row align-items-end">
+      <div class="col-8">
+        <label for="email" class="form-label">Email</label>
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          name="email"
+          formControlName="email"
+        />
+      </div>
+      <div class="col">
+        <label for="data" class="form-label">Data di compleanno</label>
+        <input
+          type="date"
+          id="data"
+          formControlName="data"
+          class="form-control"
+        />
+      </div>
+    </div>
+    <!--msg errore-->
+    <ng-container
+      *ngIf="
+        formNuovoContatto.get('email')!.touched &&
+        formNuovoContatto.get('email')!.errors
+      "
+      class="d-block"
+    >
+      <div class="text-danger" *ngIf="formNuovoContatto.get('email')!.errors">
+        Inserisci un email valida
+      </div>
+    </ng-container>
+    <!--###-->
+
+    <!--## indirizzo ##-->
+    <form class="m-4 border p-2 bg-secondary-subtle" formGroupName="indirizzo">
+      <h5 class="text-primary">Indirizzo</h5>
+      <div class="row align-items-end mb-3">
+        <div class="col-8">
+          <label for="via" class="form-label">Via e civico</label>
+          <input
+            type="text"
+            id="via"
+            formControlName="via"
+            class="form-control"
+          />
+        </div>
+        <div class="col">
+          <label for="cap" class="form-label">Cap</label>
+          <input
+            type="text"
+            id="cap"
+            formControlName="cap"
+            class="form-control"
+          />
+        </div>
+      </div>
+      <div class="row align-items-end mb-3">
+        <div class="col">
+          <label for="citta" class="form-label">Citta'</label>
+          <input
+            type="text"
+            id="citta"
+            formControlName="citta"
+            class="form-control"
+          />
+        </div>
+        <div class="col">
+          <label for="provincia" class="form-label">Provincia</label>
+          <input
+            type="text"
+            id="provincia"
+            formControlName="provincia"
+            class="form-control"
+          />
+        </div>
+        <div class="col">
+          <label for="nazione" class="form-label">Nazione</label>
+          <input
+            type="text"
+            id="nazione"
+            formControlName="nazione"
+            class="form-control"
+          />
+        </div>
+      </div>
+      <!--msg errore-->
+      <div class="text-warning">COMPILA TUTTI I CAMPI</div>
+      <!--##-->
+    </form>
+    <!--## Indirizzo ##-->
+
+    <div class="m-4 border p-2 bg-secondary-subtle row align-items-end">
+      <h5 class="text-primary">Numero di telefono</h5>
+      <div class="col">
+        <label for="prefisso" class="form-label">Prefisso</label>
+        <input
+          type="tel"
+          id="prefisso"
+          formControlName="prefisso"
+          class="form-control"
+        />
+        <!--msg errore-->
+        <ng-container
+          *ngIf="
+            formNuovoContatto.get('prefisso')!.touched &&
+            formNuovoContatto.get('prefisso')!.errors
+          "
+          class="d-block"
+        >
+          <div
+            class="text-danger"
+            *ngIf="formNuovoContatto.get('prefisso')!.errors!['pattern']"
+          >
+            Inserisci un prefisso telefonico
+          </div>
+        </ng-container>
+        <!--###-->
+      </div>
+      <div class="col-8">
+        <label for="tel" class="form-label">Telefono</label>
+        <input
+          type="text"
+          id="tel"
+          formControlName="tel"
+          class="form-control"
+        />
+        <!--msg errore-->
+        <ng-container
+          *ngIf="
+            formNuovoContatto.get('tel')!.touched &&
+            formNuovoContatto.get('tel')!.errors
+          "
+          class="d-block"
+        >
+          <div
+            class="text-danger"
+            *ngIf="formNuovoContatto.get('tel')!.errors!['pattern']"
+          >
+            Inserisci un numero di telefono corretto
+          </div>
+        </ng-container>
+        <!--###-->
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      class="btn btn-success mt-4 fs-5"
+      style="width: 14vw"
+      [disabled]="
+        formNuovoContatto.invalid && formNuovoContatto.get('indirizzo')?.invalid
+      "
+    >
+    <!--modifica testo sul primo bottone in base a se aggiunge un nuovo contatto o modifica uno gia' esistente-->
+      <span *ngIf="idEsistente == 0"
+        ><i class="bi bi-person-add"></i> Aggiungi</span
+      >
+      <span *ngIf="idEsistente != 0"
+        ><i class="bi bi-person-gear"></i>Modifica</span
+      >
+    </button>
+    <!--bottone per pulire tutti i campi-->
+    <ng-container
+      *ngIf="
+        formNuovoContatto.valid && formNuovoContatto.get('indirizzo')?.valid
+      "
+    >
+      <button
+        type="button"
+        class="btn btn-danger mt-4 ms-2 fs-5"
+        style="width: 14vw"
+        [disabled]="
+          formNuovoContatto.invalid &&
+          formNuovoContatto.get('indirizzo')?.invalid
+        "
+        (click)="pulisciCampi()"
+      >
+        <i class="bi bi-person-exclamation me-1"></i>cancella tutto
+      </button>
+    </ng-container>
+    <!--###-->
+  </form>
+</div>
