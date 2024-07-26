@@ -30,5 +30,12 @@ cancella(id : number){ //cancella utente dalla lista di contatti
   })
 }
 
+DatidaModificare(id :number){
+  this.rubSer.modifica = true; //modifica utente esistente
+  this.rubSer.idDaModificare = id.toString() //prende i dati da modificare
+  console.log(id)
+  this.router.navigate(['nuovo/' + id]) //invia a pagina del form gia' compilata
+}
+
 
 }

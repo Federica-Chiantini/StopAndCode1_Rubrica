@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { RubricaService } from '../../services/rubrica.service';
 import { tipoPersona } from '../../models/interfaccia';
@@ -10,24 +10,15 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './nuovo-contatto.component.html',
   styleUrl: './nuovo-contatto.component.scss'
 })
-export class NuovoContattoComponent {
+export class NuovoContattoComponent{
+
   constructor(public servizioR : RubricaService, private router : Router){}
 
   formNuovoContatto = new FormGroup({ //formGroup
     //formControls
     persona : new FormControl("fisica", Validators.required), 
-    sociale : new FormControl("", Validators.required
-      //#### PURTROPPO NON SONO RIUSCITA A FARLO FUNZIONARE MA HO VOLUTO COMUNQUE LASCIARLO QUI PER MOSTRARTI IL CUSTOM VALIDATOR CHE STAVO PREPARANDO
-      /* (rs : AbstractControl) => { 
-      const valore : string = rs.value;
-      const sigleAmmesse = ['spa' , 'srl' , 'sas' , 'snc' , 'ss']
-      if(valore.includes('spa') || valore.includes('srl')){ 
-      return null 
-      }
-      return {sigleAmmesse}
-      }*/
+    sociale : new FormControl("", [Validators.minLength(3), Validators.required]),
       //####
-    ),
     nome : new FormControl("", [Validators.minLength(3), Validators.required]),
     cognome : new FormControl("", [Validators.minLength(3), Validators.required]),
     email: new FormControl("", Validators.email),
@@ -51,26 +42,22 @@ export class NuovoContattoComponent {
   ngOnInit(){
     //##modifica se modifica = true
     if(this.servizioR.modifica){
-      const dati = this.servizioR.testoDaModificare //prende i dati da contatto gia' creato
-      this.idEsistente = dati!.id //prende id contatto esistente
-      this.formNuovoContatto.patchValue({ //NB: NON MI FUNZIONA CON setValue MA SOLO CON patchValue
-        "persona": dati!.persona,
-        "nome": dati!.nome,
-        "cognome": dati!.cognome,
-        "sociale": dati!.sociale,
-        "email": dati!.email,
-        "data": dati!.data,
-        "indirizzo": {
-          "via": dati!.indirizzo.via,
-          "cap": dati!.indirizzo.cap,
-          "citta": dati!.indirizzo.citta,
-          "provincia": dati!.indirizzo.provincia,
-          "nazione": dati!.indirizzo.nazione
-        },
-        "prefisso" : dati!.prefisso,
-        "tel" : dati!.tel,
-        "id": dati!.id,
-})
+      this.servizioR.contattoSelezionato(this.servizioR.idDaModificare!).subscribe(
+        {
+          next : (dati) => {
+            if(dati.persona === 'fisica'){
+              dati.sociale = ''
+            }else{
+              dati.nome=''
+              dati.cognome=''
+              dati.data=''
+            }
+            this.formNuovoContatto.setValue(dati)
+            this.idEsistente = dati.id, 
+            console.log(dati)},
+          error : (e) => {alert("problema con il server")}
+        }
+      )
     }
     //##MODIFICA
 
@@ -114,22 +101,21 @@ pulisciCampi(){
 
 //ngSubmit
 inviaForm(){
+  console.log(this.formNuovoContatto.value)
         //##MODIFICA solo se idEsistente e' uguale a id di questo "nuovo" form
   if(this.datiForm.id === this.idEsistente){this.servizioR.modificaUtente(this.datiForm, this.datiForm.id).subscribe({
     next: (c) => (this.router.navigate([''])),
     error : (e : HttpErrorResponse) => (alert(`errore ${e.status}: ${e.message}`))
   })
-  //NB: MI DA errore 500 ad ogni modifica ma poi mi appare il contatto completo nella lista e anche nel server
-}//##MODIFICA
-
-  console.log(this.formNuovoContatto.value),
-
-  //aggiunge nuovo utente se la condizione sopra non si verifica
-    this.servizioR.aggingiUtente(this.datiForm).subscribe({
-      next: (c) => (this.router.navigate([''])),
-      error : (e : HttpErrorResponse) => (alert(`errore ${e.status}: ${e.message}`)
-    )}
-    )
+}
+else{ //aggiunge nuovo utente se la condizione sopra non si verifica
+  this.servizioR.aggingiUtente(this.datiForm).subscribe({
+    next: (c) => (this.router.navigate([''])),
+    error : (e : HttpErrorResponse) => (alert(`errore ${e.status}: ${e.message}`)
+  )}
+  )
+}
   }
+
 }
 

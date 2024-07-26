@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class RubricaService {
+  testoDaModificare: any;
 
   constructor(private http : HttpClient, private router : Router) { }
 
@@ -28,16 +29,9 @@ export class RubricaService {
     return this.http.delete<tipoPersona>(environment.APIurl + id)
 }
 
-modifica : boolean = false;  //usato per verificare lo stato in cui si trova il form : 
-//TRUE= modifica utente esistente 
-//FALSE= aggiungi nuovo utente
-testoDaModificare ?: tipoPersona  //salva i campi del contatto da modificare
-
-DatidaModificare(body : tipoPersona){
-  this.modifica = true; //modifica utente esistente
-  this.testoDaModificare = body //prende i dati da modificare
-  this.router.navigate(['nuovo']) //invia a pagina del form gia' compilata
-}
+modifica : boolean = false;  
+//usato per verificare lo stato in cui si trova il form : TRUE= modifica utente esistente / FALSE= aggiungi nuovo utente
+idDaModificare ?: string  //salva i campi del contatto da modificare
 
 modificaUtente(oggetto : tipoPersona, id : number){
   return this.http.patch(environment.APIurl + id, oggetto)
