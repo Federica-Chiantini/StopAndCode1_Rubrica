@@ -7,7 +7,7 @@ import { ContattoComponent } from './components/contatto/contatto.component';
 const routes: Routes = [
   {path: "", component: ListaContattiComponent},
   {path: "nuovo", component: NuovoContattoComponent},
-  {path: "nuovo/:id", component: NuovoContattoComponent},
+  {path: "modifica/:id", component: NuovoContattoComponent},
   {path: ":id", component: ContattoComponent}
 ];
 
