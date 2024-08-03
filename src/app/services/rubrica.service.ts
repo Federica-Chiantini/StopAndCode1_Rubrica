@@ -34,6 +34,6 @@ modifica : boolean = false;
 idDaModificare ?: string  //salva i campi del contatto da modificare
 
 modificaUtente(oggetto : tipoPersona, id : number){
-  return this.http.patch(environment.APIurl + id, oggetto)
+  return this.http.put(environment.APIurl + id, oggetto)
 }
 }
